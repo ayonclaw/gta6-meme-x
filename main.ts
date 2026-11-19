@@ -1,11 +1,11 @@
-import { copyFileSync, mkdirSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
+import { copyFile, mkdir } from 'node:fs/promises';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const here = dirname(fileURLToPath(import.meta.url));
-const out = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
+const source = join(dirname(fileURLToPath(import.meta.url)), 'POST.json');
+const destinationDirectory = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
+const destination = join(destinationDirectory, 'POST.json');
 
-mkdirSync(out, { recursive: true });
-copyFileSync(join(here, "POST.json"), join(out, "POST.json"));
-
-console.log(`copied POST.json to ${join(out, "POST.json")}`);
+await mkdir(destinationDirectory, { recursive: true });
+await copyFile(source, destination);
+console.log(destination);
